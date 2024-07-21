@@ -3,6 +3,8 @@ import "@/styles/globals.css";
 import { Outfit as FontSans } from "next/font/google";
 import Nav from "../components/Nav";
 import { ThemeProvider } from "../components/theme/theme-provider";
+import { GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 
 import { cn } from "@/lib/utils";
 
@@ -42,6 +44,17 @@ export default function RootLayout({
           </main>
         </ThemeProvider>
       </body>
+      <GoogleTagManager gtmId="GTM-5Q74XNRK" />
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-2JN203KPFG" />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2JN203KPFG');
+        `}
+      </Script>
     </html>
   );
 }
