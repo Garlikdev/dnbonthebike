@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import YouTubePlayer from "./components/YoutubePlayer";
-import Playlist from "./components/Playlist";
-import Link from "next/link";
+import ReactPlayer from "react-player";
 import playlists from "@/lib/Playlists";
-
 import {
   Card,
   CardContent,
@@ -15,15 +12,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Playlist from "./components/Playlist";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
 
 export default function HomePage() {
-  // Find the latest playlist
-  const latestPlaylist = playlists.find((playlist) => playlist.latest);
-
-  // Filter out the latest playlist from the list
-  const remainingPlaylists = playlists.filter(
-    (playlist) => playlist !== latestPlaylist,
-  );
+  // State to keep track of the selected playlist
+  const [currentPlaylist, setCurrentPlaylist] = useState(playlists[0]);
 
   // State to keep track of current times for each playlist
   const [currentTimes, setCurrentTimes] = useState<Record<string, number>>(
@@ -31,7 +32,7 @@ export default function HomePage() {
   );
 
   // Refs to keep track of player instances
-  const playerRefs = useRef<Record<string, any>>(
+  const playerRefs = useRef<Record<string, ReactPlayer | null>>(
     playlists.reduce(
       (acc, playlist) => ({ ...acc, [playlist.name]: null }),
       {},
@@ -39,100 +40,139 @@ export default function HomePage() {
   );
 
   // Handler for player ready event
-  const handlePlayerReady = (event: any, name: string) => {
-    playerRefs.current[name] = event.target;
+  const handlePlayerReady = (player: ReactPlayer, name: string) => {
+    playerRefs.current[name] = player;
     setInterval(() => {
-      setCurrentTimes((prevTimes) => ({
-        ...prevTimes,
-        [name]: playerRefs.current[name]?.getCurrentTime() || 0,
-      }));
+      if (player) {
+        setCurrentTimes((prevTimes) => ({
+          ...prevTimes,
+          [name]: player.getCurrentTime() || 0,
+        }));
+      }
     }, 1000);
   };
 
   // Handler for item click event
   const handleItemClick = (time: number, name: string) => {
-    playerRefs.current[name]?.seekTo(time, true);
+    playerRefs.current[name]?.seekTo(time, "seconds");
   };
 
+  const [hasWindow, setHasWindow] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasWindow(true);
+    }
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+    <div className="flex min-h-screen flex-col items-center">
+      <div className="container flex flex-col items-center justify-center gap-4 px-4 py-8">
         <h1 className="bg-gradient-to-r from-neutral-500 via-yellow-500 via-30% to-indigo-500 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent dark:from-neutral-100 dark:via-yellow-100 dark:to-indigo-100">
           Tracklists
         </h1>
-
-        {/* Latest Playlist Section */}
-        {latestPlaylist && (
-          <Card>
+        <div className="max-w-64">
+          <Select
+            value={currentPlaylist?.name ?? "No playlist selected"}
+            onValueChange={(value) => {
+              const playlist = playlists.find(
+                (playlist) => playlist.name === value,
+              );
+              if (playlist) {
+                setCurrentPlaylist(playlist);
+              }
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a playlist" />
+            </SelectTrigger>
+            <SelectContent>
+              {playlists.map((playlist) => (
+                <SelectItem
+                  key={playlist.name}
+                  value={playlist.name}
+                  className={`cursor-pointer py-2`}
+                >
+                  {playlist.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Display the selected playlist */}
+        {currentPlaylist && (
+          <Card className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2">
             <CardHeader>
               <CardTitle>
                 <Link
                   className="underline hover:text-blue-300"
-                  href={latestPlaylist.url}
+                  href={currentPlaylist.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {latestPlaylist.name}
+                  {currentPlaylist.name}
                 </Link>
               </CardTitle>
               <CardDescription>
-                {moment(latestPlaylist.date, "D.M.YYYY").format("LL")}
+                {moment(currentPlaylist.date, "D.M.YYYY").format("LL")}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <YouTubePlayer
-                videoId={latestPlaylist.videoId}
-                onReady={(event) =>
-                  handlePlayerReady(event, latestPlaylist.name)
-                }
-                onStateChange={() => {}}
-              />
+              <div className="relative pt-[56.25%]">
+                {hasWindow && (
+                  <ReactPlayer
+                    className="absolute left-0 top-0"
+                    url={currentPlaylist.url}
+                    ref={(player) => {
+                      if (player) {
+                        handlePlayerReady(player, currentPlaylist.name);
+                      }
+                    }}
+                    config={{
+                      youtube: {
+                        playerVars: { autoplay: 0 },
+                      },
+                    }}
+                    autoPlay={0}
+                    controls
+                    width="100%"
+                    height="100%"
+                  />
+                )}
+              </div>
             </CardContent>
             <CardFooter>
               <Playlist
-                items={latestPlaylist.items}
+                items={currentPlaylist.items}
                 onItemClick={(time) =>
-                  handleItemClick(time, latestPlaylist.name)
+                  handleItemClick(time, currentPlaylist.name)
                 }
-                currentTime={currentTimes[latestPlaylist.name] ?? 0}
+                currentTime={currentTimes[currentPlaylist.name] ?? 0}
               />
             </CardFooter>
           </Card>
         )}
-
-        {/* Other Playlists Section */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          {remainingPlaylists.map((playlist) => (
-            <Card key={playlist.name}>
-              <CardHeader>
-                <CardTitle>
-                  <Link
-                    className="underline hover:text-blue-300"
-                    href={playlist.url}
-                  >
-                    {playlist.name}
-                  </Link>
-                </CardTitle>
-                <CardDescription>
-                  {moment(playlist.date, "D.M.YYYY").format("LL")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <YouTubePlayer
-                  videoId={playlist.videoId}
-                  onReady={(event) => handlePlayerReady(event, playlist.name)}
-                  onStateChange={() => {}}
-                />
-              </CardContent>
-              <CardFooter>
-                <Playlist
-                  items={playlist.items}
-                  onItemClick={(time) => handleItemClick(time, playlist.name)}
-                  currentTime={currentTimes[playlist.name] ?? 0}
-                />
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        {currentPlaylist && (
+          <Card className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2">
+            <CardHeader>
+              <CardTitle>{currentPlaylist.name}</CardTitle>
+              <CardDescription>Tracklist text version</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {currentPlaylist.items.map((item) => (
+                <div key={item.time}>
+                  {formatTime(item.time)} - {item.title}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
       </div>
-    </main>
+    </div>
   );
 }
+
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+};

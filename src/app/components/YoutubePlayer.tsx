@@ -1,51 +1,31 @@
 "use client";
 
 import React, { useRef } from "react";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
+import type { YouTubeProps } from "react-youtube";
 
-interface YouTubePlayerProps {
-  videoId: string;
-  onReady: (event: YouTubeProps["onReady"]) => void;
-  onStateChange: (event: YouTubeProps["onStateChange"]) => void;
-}
-
-const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
+const YouTubePlayer: React.FC<YouTubeProps> = ({
   videoId,
   onReady,
   onStateChange,
 }) => {
-  const playerRef = useRef(null);
-
   const opts: YouTubeProps["opts"] = {
     height: "315",
     width: "560",
     playerVars: {
       autoplay: 0,
-      controls: 2,
+      controls: 1,
       modestbranding: 1,
       rel: 0,
     },
-  };
-
-  const handleReady = (event) => {
-    playerRef.current = event.target;
-    if (onReady) {
-      onReady(event);
-    }
-  };
-
-  const handleStateChange = (event) => {
-    if (onStateChange) {
-      onStateChange(event);
-    }
   };
 
   return (
     <YouTube
       videoId={videoId}
       opts={opts}
-      onReady={handleReady}
-      onStateChange={handleStateChange}
+      onReady={onReady}
+      onStateChange={onStateChange}
     />
   );
 };

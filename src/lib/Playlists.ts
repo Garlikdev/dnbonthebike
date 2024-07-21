@@ -19,7 +19,7 @@ const playlists: Playlist[] = [
     date: "19.7.2024",
     videoId: "K0pdUFP84Jk",
     url: "https://www.youtube.com/watch?v=K0pdUFP84Jk",
-    name: "Frankfurt",
+    name: "Germany - Frankfurt",
     items: [
       {
         time: 0,
@@ -34,7 +34,7 @@ const playlists: Playlist[] = [
     date: "13.6.2024",
     videoId: "V_ERm18dBCY",
     url: "https://youtu.be/V_ERm18dBCY",
-    name: "Switzerland",
+    name: "Switzerland - Zurich",
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
   {
@@ -42,7 +42,7 @@ const playlists: Playlist[] = [
     date: "27.5.2024",
     videoId: "SZGyi9km_6E",
     url: "https://youtu.be/SZGyi9km_6E",
-    name: "Darwin",
+    name: "Australia - Darwin",
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
   {
@@ -50,7 +50,7 @@ const playlists: Playlist[] = [
     date: "4.4.2024",
     videoId: "RqimBw6uTWg",
     url: "https://www.youtube.com/watch?v=RqimBw6uTWg",
-    name: "Bristol",
+    name: "Englang - Bristol",
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
   {
@@ -58,7 +58,7 @@ const playlists: Playlist[] = [
     date: "7.3.2024",
     videoId: "shzJxoNBF5M",
     url: "https://youtu.be/shzJxoNBF5M",
-    name: "Southampton",
+    name: "England - Southampton",
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
 ];

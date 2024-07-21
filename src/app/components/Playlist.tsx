@@ -31,11 +31,13 @@ const Playlist: React.FC<PlaylistProps> = ({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const activeIndex = items.findIndex(
-      (item, index) =>
+    const activeIndex = items.findIndex((item, index) => {
+      const nextItem = items[index + 1];
+      return (
         currentTime >= item.time &&
-        (!items[index + 1] || currentTime < items[index + 1].time),
-    );
+        (nextItem === undefined || currentTime < nextItem.time)
+      );
+    });
     setActiveIndex(activeIndex);
   }, [currentTime, items]);
 
@@ -49,7 +51,6 @@ const Playlist: React.FC<PlaylistProps> = ({
       <Select
         onValueChange={handleChange}
         value={items[activeIndex ?? 0]?.time.toString()}
-        modal={false}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select a song" />
@@ -70,9 +71,9 @@ const Playlist: React.FC<PlaylistProps> = ({
       <div className="flex w-full items-center gap-2">
         <p>Current song:</p>
         <div>
-          {items[activeIndex ?? 0].url ? (
+          {items[activeIndex ?? 0]?.url ? (
             <Link
-              href={items[activeIndex ?? 0].url}
+              href={items[activeIndex ?? 0]?.url ?? "#"}
               className="inline-flex items-center gap-1 text-green-500"
             >
               Link <ExternalLinkIcon />
