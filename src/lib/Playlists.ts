@@ -51,7 +51,7 @@ const playlists: Playlist[] = [
         url: "",
       },
       { time: 1902, title: "Aries - Not so bad", url: "" },
-      { time: 1992, title: "Crystal Clear - Madhouse", url: "" },
+      { time: 2051, title: "Crystal Clear - Madhouse", url: "" },
       {
         time: 2200,
         title: "Damian Marley - Welcome to Jamrock(London) ???",
