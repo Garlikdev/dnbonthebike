@@ -52,6 +52,25 @@ export default function HomePage() {
     ),
   );
 
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!currentPlaylist) return; // Early return if no playlist is selected
+
+    const playlistName = currentPlaylist.name;
+    const currentTime = currentTimes[playlistName] ?? 0; // Default to 0 if undefined
+
+    const activeIndex = currentPlaylist.items.findIndex((item, index) => {
+      const nextItem = currentPlaylist.items[index + 1];
+      return (
+        currentTime >= item.time &&
+        (nextItem === undefined || currentTime < nextItem.time)
+      );
+    });
+
+    setActiveIndex(activeIndex);
+  }, [currentTimes, currentPlaylist]);
+
   // Handler for player ready event
   const handlePlayerReady = (player: ReactPlayer, name: string) => {
     playerRefs.current[name] = player;
@@ -170,7 +189,7 @@ export default function HomePage() {
               <CardTitle className="flex justify-between">
                 {currentPlaylist.name} <p>▶️ Now playing</p>
               </CardTitle>
-              <CardDescription>Tracklist text version</CardDescription>
+              <CardDescription>Click on the song to play it</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -185,13 +204,15 @@ export default function HomePage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentPlaylist.items.map((item) => (
+                  {currentPlaylist.items.map((item, index) => (
                     <TableRow
                       key={item.time}
                       onClick={() =>
                         handleItemClick(item.time, currentPlaylist.name)
                       }
-                      className={"cursor-pointer"}
+                      className={`cursor-pointer transition-colors hover:!bg-orange-500/60 ${
+                        activeIndex === index ? "bg-orange-500/30" : ""
+                      }`}
                     >
                       <TableCell className="font-medium">
                         {formatTime(item.time)}
