@@ -144,6 +144,7 @@ export default function HomePage() {
                       }
                     }}
                     playing={playing}
+                    controls
                     autoplay={false}
                     width="100%"
                     height="100%"
@@ -158,6 +159,7 @@ export default function HomePage() {
                   handleItemClick(time, currentPlaylist.name)
                 }
                 currentTime={currentTimes[currentPlaylist.name] ?? 0}
+                setPlaying={setPlaying}
               />
             </CardFooter>
           </Card>
@@ -165,7 +167,9 @@ export default function HomePage() {
         {currentPlaylist && (
           <Card className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2">
             <CardHeader>
-              <CardTitle>{currentPlaylist.name}</CardTitle>
+              <CardTitle className="flex justify-between">
+                {currentPlaylist.name} <p>▶️ Now playing</p>
+              </CardTitle>
               <CardDescription>Tracklist text version</CardDescription>
             </CardHeader>
             <CardContent>

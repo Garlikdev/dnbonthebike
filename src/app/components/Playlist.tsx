@@ -21,12 +21,14 @@ interface PlaylistProps {
   items: PlaylistItem[];
   onItemClick: (time: number) => void;
   currentTime: number;
+  setPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Playlist: React.FC<PlaylistProps> = ({
   items,
   onItemClick,
   currentTime,
+  setPlaying,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -44,6 +46,7 @@ const Playlist: React.FC<PlaylistProps> = ({
   const handleChange = (value: string) => {
     const time = parseInt(value);
     onItemClick(time);
+    setPlaying(true);
   };
 
   return (
