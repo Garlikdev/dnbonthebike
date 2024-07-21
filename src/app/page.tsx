@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/youtube";
 import playlists from "@/lib/Playlists";
 import {
   Card,
@@ -20,7 +20,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import Link from "next/link";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 export default function HomePage() {
   // State to keep track of the selected playlist
@@ -30,6 +40,9 @@ export default function HomePage() {
   const [currentTimes, setCurrentTimes] = useState<Record<string, number>>(
     playlists.reduce((acc, playlist) => ({ ...acc, [playlist.name]: 0 }), {}),
   );
+
+  // State to control if the player is playing
+  const [playing, setPlaying] = useState(false);
 
   // Refs to keep track of player instances
   const playerRefs = useRef<Record<string, ReactPlayer | null>>(
@@ -55,6 +68,16 @@ export default function HomePage() {
   // Handler for item click event
   const handleItemClick = (time: number, name: string) => {
     playerRefs.current[name]?.seekTo(time, "seconds");
+    setPlaying(true); // Set the player to play when a song is clicked
+  };
+
+  // Handler for playlist selection
+  const handlePlaylistChange = (value: string) => {
+    const playlist = playlists.find((playlist) => playlist.name === value);
+    if (playlist) {
+      setCurrentPlaylist(playlist);
+      setPlaying(false); // Pause when changing playlists
+    }
   };
 
   const [hasWindow, setHasWindow] = useState(false);
@@ -73,14 +96,7 @@ export default function HomePage() {
         <div className="max-w-64">
           <Select
             value={currentPlaylist?.name ?? "No playlist selected"}
-            onValueChange={(value) => {
-              const playlist = playlists.find(
-                (playlist) => playlist.name === value,
-              );
-              if (playlist) {
-                setCurrentPlaylist(playlist);
-              }
-            }}
+            onValueChange={handlePlaylistChange}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a playlist" />
@@ -127,13 +143,8 @@ export default function HomePage() {
                         handlePlayerReady(player, currentPlaylist.name);
                       }
                     }}
-                    config={{
-                      youtube: {
-                        playerVars: { autoplay: 0 },
-                      },
-                    }}
-                    autoPlay={0}
-                    controls
+                    playing={playing}
+                    autoplay={false}
                     width="100%"
                     height="100%"
                   />
@@ -158,11 +169,46 @@ export default function HomePage() {
               <CardDescription>Tracklist text version</CardDescription>
             </CardHeader>
             <CardContent>
-              {currentPlaylist.items.map((item) => (
-                <div key={item.time}>
-                  {formatTime(item.time)} - {item.title}
-                </div>
-              ))}
+              <Table>
+                <TableCaption>
+                  Unknown songs are being updated daily.
+                </TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Time</TableHead>
+                    <TableHead>Song name</TableHead>
+                    <TableHead>Link</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentPlaylist.items.map((item) => (
+                    <TableRow
+                      key={item.time}
+                      onClick={() =>
+                        handleItemClick(item.time, currentPlaylist.name)
+                      }
+                      className={"cursor-pointer"}
+                    >
+                      <TableCell className="font-medium">
+                        {formatTime(item.time)}
+                      </TableCell>
+                      <TableCell>{item.title}</TableCell>
+                      <TableCell>
+                        {item.url ? (
+                          <Link
+                            href={item.url}
+                            className="inline-flex items-center gap-1 text-green-500"
+                          >
+                            Link <ExternalLinkIcon />
+                          </Link>
+                        ) : (
+                          ""
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         )}
