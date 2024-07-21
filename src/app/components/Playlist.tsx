@@ -1,0 +1,95 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+
+interface PlaylistItem {
+  title: string;
+  time: number;
+  url: string;
+}
+
+interface PlaylistProps {
+  items: PlaylistItem[];
+  onItemClick: (time: number) => void;
+  currentTime: number;
+}
+
+const Playlist: React.FC<PlaylistProps> = ({
+  items,
+  onItemClick,
+  currentTime,
+}) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const activeIndex = items.findIndex(
+      (item, index) =>
+        currentTime >= item.time &&
+        (!items[index + 1] || currentTime < items[index + 1].time),
+    );
+    setActiveIndex(activeIndex);
+  }, [currentTime, items]);
+
+  const handleChange = (value: string) => {
+    const time = parseInt(value);
+    onItemClick(time);
+  };
+
+  return (
+    <div className="w-full">
+      <Select
+        onValueChange={handleChange}
+        value={items[activeIndex ?? 0]?.time.toString()}
+        modal={false}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a song" />
+        </SelectTrigger>
+        <SelectContent>
+          {items.map((item, index) => (
+            <SelectItem
+              key={index}
+              value={item.time.toString()}
+              className={`cursor-pointer py-2 ${index === activeIndex ? "font-bold" : ""}`}
+              onClick={() => onItemClick(item.time)}
+            >
+              {formatTime(item.time)} - {item.title}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <div className="flex w-full items-center gap-2">
+        <p>Current song:</p>
+        <div>
+          {items[activeIndex ?? 0].url ? (
+            <Link
+              href={items[activeIndex ?? 0].url}
+              className="inline-flex items-center gap-1 text-green-500"
+            >
+              Link <ExternalLinkIcon />
+            </Link>
+          ) : (
+            <p className="text-rose-500">Not released / updated</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+};
+
+export default Playlist;
