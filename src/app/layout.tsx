@@ -13,7 +13,7 @@ const fontSans = FontSans({
 
 export const metadata = {
   title: "Dnb On The Bike",
-  description: "Playlists for Dnb On The Bike",
+  description: "Dom Whiting Tracklists",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
