@@ -44,15 +44,15 @@ export default function RootLayout({
           </main>
         </ThemeProvider>
       </body>
-      <GoogleTagManager gtmId="GTM-5Q74XNRK" />
+      <GoogleTagManager gtmId="GTM-KP226FVQ" />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-2JN203KPFG" />
       <Script id="google-analytics">
         {`
           window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-  gtag('config', 'G-2JN203KPFG');
+          gtag('config', 'G-2JN203KPFG');
         `}
       </Script>
     </html>

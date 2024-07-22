@@ -107,14 +107,14 @@ const playlists: Playlist[] = [
       { time: 4821, title: "Prodigy - Voodoo People Delta Heavy", url: "" },
       { time: 4946, title: "Formula - So Lost (Formula Remix)", url: "" },
       {
-        time: 5172,
+        time: 5183,
         title: "The Drop - Looking To The Sky (Aries & Kelvin 373 Remix)",
         url: "",
       },
       { time: 5311, title: "Sikoti - Say It Right", url: "" },
       { time: 5423, title: "Deep Notion - Hands Up", url: "" },
       { time: 5530, title: "Selecta J-Man - OG Rudeboy", url: "" },
-      { time: 5734, title: "Hedex - No More Fighting", url: "" },
+      { time: 5743, title: "Hedex - No More Fighting", url: "" },
     ],
   },
   {
