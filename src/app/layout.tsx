@@ -4,6 +4,7 @@ import { Outfit as FontSans } from "next/font/google";
 import Nav from "../components/Nav";
 import { ThemeProvider } from "../components/theme/theme-provider";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
 import { cn } from "@/lib/utils";
@@ -45,7 +46,8 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
       <GoogleTagManager gtmId="GTM-KP226FVQ" />
-      <Script
+      <GoogleAnalytics gaId="G-2JN203KPFG" />
+      {/* <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-2JN203KPFG"
       />
@@ -57,7 +59,7 @@ export default function RootLayout({
 
           gtag('config', 'G-2JN203KPFG');
         `}
-      </Script>
+      </Script> */}
     </html>
   );
 }
