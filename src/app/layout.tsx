@@ -1,18 +1,16 @@
 import "@/styles/globals.css";
 
-import { Outfit as FontSans } from "next/font/google";
+// import { Outfit as FontSans } from "next/font/google";
 import Nav from "../components/Nav";
 import { ThemeProvider } from "../components/theme/theme-provider";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Script from "next/script";
+import { GeistSans } from "geist/font/sans";
 
-import { cn } from "@/lib/utils";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+// const fontSans = FontSans({
+//   subsets: ["latin"],
+//   variable: "--font-sans",
+// });
 
 export const metadata = {
   title: "Dnb On The Bike",
@@ -26,13 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "relative min-h-screen bg-background bg-neutral-200 bg-opacity-50 font-sans text-neutral-950 antialiased dark:bg-neutral-900 dark:text-neutral-50 dark:text-opacity-90",
-          fontSans.variable,
-        )}
-      >
+    <html
+      className={`${GeistSans.variable}`}
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className="relative min-h-screen bg-background bg-neutral-200 bg-opacity-50 font-sans text-neutral-950 antialiased dark:bg-neutral-900 dark:text-neutral-50 dark:text-opacity-90">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
