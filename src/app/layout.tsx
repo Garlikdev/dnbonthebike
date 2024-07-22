@@ -45,7 +45,10 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
       <GoogleTagManager gtmId="GTM-KP226FVQ" />
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-2JN203KPFG" />
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-2JN203KPFG"
+      />
       <Script id="google-analytics">
         {`
           window.dataLayer = window.dataLayer || [];
