@@ -3,12 +3,7 @@ import type { Config } from "tailwindcss";
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     container: {
       center: true,
@@ -22,19 +17,6 @@ const config: Config = {
         sans: ["var(--font-geist-sans)"],
       },
       colors: {
-        "primary-500": "#877EFF",
-        "primary-600": "#5D5FEF",
-        "secondary-500": "#FFB620",
-        "off-white": "#D0DFFF",
-        red: "#FF5A5A",
-        "dark-1": "#000000",
-        "dark-2": "#09090A",
-        "dark-3": "#101012",
-        "dark-4": "#1F1F22",
-        "light-1": "#FFFFFF",
-        "light-2": "#EFEFEF",
-        "light-3": "#7878A3",
-        "light-4": "#5C5C7B",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
