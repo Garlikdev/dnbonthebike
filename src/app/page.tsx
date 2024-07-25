@@ -49,6 +49,7 @@ export default function HomePage() {
                 <Image
                   src="/DomPhoto.webp"
                   alt="Dom Photo"
+                  sizes="25vw"
                   fill
                   className="!relative h-64 rounded-2xl object-cover object-top shadow-lg md:!absolute md:h-auto"
                 />
@@ -69,20 +70,24 @@ export default function HomePage() {
                     href={`/tracklists/${playlist.year}/${playlist.city.toLowerCase()}`}
                     className="flex cursor-pointer flex-row items-center gap-4 rounded-xl bg-foreground/10 px-4 py-4 shadow-lg transition-all hover:scale-[1.02] hover:bg-primary/30"
                   >
-                    <Image
-                      src={`https://i.ytimg.com/vi/${playlist.videoId}/mqdefault.jpg`}
-                      alt={playlist.name}
-                      width={320}
-                      height={180}
-                      className="h-24 w-48 rounded-2xl object-cover shadow-lg lg:h-16 lg:w-24"
-                    />
+                    <div className="relative aspect-video h-24 lg:h-20">
+                      <Image
+                        src={`https://i.ytimg.com/vi/${playlist.videoId}/mqdefault.jpg`}
+                        alt={playlist.name}
+                        fill
+                        sizes="25vw"
+                        className="h-auto rounded-2xl object-cover shadow-lg"
+                      />
+                    </div>
                     <div className="grid grid-cols-3 items-center lg:grid-cols-1">
                       <div className="col-span-1 w-64 flex-row items-center gap-2 lg:w-auto lg:flex-col">
                         <p className="text-sm">{playlist.country}</p>
                         <p className="font-bold">{playlist.city}</p>
                       </div>
                       <div className="col-span-2">
-                        <p className="font-bold lg:hidden">{playlist.name}</p>
+                        <p className="hidden font-bold sm:block lg:hidden">
+                          {playlist.name}
+                        </p>
                       </div>
                     </div>
                   </Link>
@@ -104,6 +109,7 @@ export default function HomePage() {
                   <Image
                     src="/shirtnew.webp"
                     alt="2023 Tour T-Shirt"
+                    sizes="50vw"
                     fill
                     className="h-auto rounded-2xl object-cover shadow-lg"
                   />

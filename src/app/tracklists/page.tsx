@@ -22,13 +22,15 @@ export default function Tracklists() {
               href={`/tracklists/${playlist.year}/${playlist.city.toLowerCase()}`}
               className="flex cursor-pointer flex-row items-center gap-4 rounded-xl bg-foreground/10 px-4 py-4 shadow-lg transition-all duration-150 hover:scale-[1.02] hover:bg-primary/30"
             >
-              <Image
-                src={`https://i.ytimg.com/vi/${playlist.videoId}/default.jpg`}
-                alt={playlist.name}
-                width={120}
-                height={90}
-                className="h-16 rounded-2xl object-cover shadow-lg"
-              />
+              <div className="relative aspect-video h-20">
+                <Image
+                  src={`https://i.ytimg.com/vi/${playlist.videoId}/mqdefault.jpg`}
+                  alt={playlist.name}
+                  fill
+                  sizes="25vw"
+                  className="h-auto rounded-2xl object-cover shadow-lg"
+                />
+              </div>
               <div>
                 <p className="text-sm">{playlist.country}</p>
                 <p className="font-bold">{playlist.city}</p>

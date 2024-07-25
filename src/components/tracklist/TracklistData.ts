@@ -9,7 +9,7 @@ const playlistsData: IPlaylist[] = [
     year: 2024,
     date: "19.7.2024",
     videoId: "K0pdUFP84Jk",
-    url: "https://www.youtube.com/watch?v=K0pdUFP84Jk",
+    url: "https://www.youtube-nocookie.com/watch?v=K0pdUFP84Jk",
     latest: true,
     items: [
       {
@@ -116,7 +116,7 @@ const playlistsData: IPlaylist[] = [
     year: 2024,
     date: "13.6.2024",
     videoId: "V_ERm18dBCY",
-    url: "https://youtu.be/V_ERm18dBCY",
+    url: "https://www.youtube-nocookie.com/watch?v=V_ERm18dBCY",
     latest: false,
     items: [
       {
@@ -251,7 +251,7 @@ const playlistsData: IPlaylist[] = [
     year: 2024,
     date: "27.5.2024",
     videoId: "SZGyi9km_6E",
-    url: "https://youtu.be/SZGyi9km_6E",
+    url: "https://www.youtube-nocookie.com/watch?v=SZGyi9km_6E",
     latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
@@ -263,7 +263,7 @@ const playlistsData: IPlaylist[] = [
     year: 2024,
     date: "4.4.2024",
     videoId: "RqimBw6uTWg",
-    url: "https://www.youtube.com/watch?v=RqimBw6uTWg",
+    url: "https://www.youtube-nocookie.com/watch?v=RqimBw6uTWg",
     latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
@@ -275,7 +275,7 @@ const playlistsData: IPlaylist[] = [
     year: 2024,
     date: "7.3.2024",
     videoId: "shzJxoNBF5M",
-    url: "https://youtu.be/shzJxoNBF5M",
+    url: "https://youtube-nocookie.com/watch?v=shzJxoNBF5M",
     latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import ReactPlayer from "react-player/youtube";
+import ReactPlayer from "react-player/lazy";
 import {
   Card,
   CardContent,
