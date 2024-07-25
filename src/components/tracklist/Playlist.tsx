@@ -10,15 +10,10 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
-
-interface PlaylistItem {
-  title: string;
-  time: number;
-  url: string;
-}
+import type { IPlaylistItem } from "@/types/types";
 
 interface PlaylistProps {
-  items: PlaylistItem[];
+  items: IPlaylistItem[];
   onItemClick: (time: number) => void;
   currentTime: number;
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -78,6 +73,8 @@ const Playlist: React.FC<PlaylistProps> = ({
             <Link
               href={items[activeIndex ?? 0]?.url ?? "#"}
               className="inline-flex items-center gap-1 text-green-500"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Link <ExternalLinkIcon />
             </Link>

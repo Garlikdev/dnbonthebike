@@ -1,25 +1,16 @@
-interface PlaylistItem {
-  title: string;
-  time: number;
-  url: string;
-}
+import type { IPlaylist } from "@/types/types";
 
-interface Playlist {
-  latest: boolean;
-  date: string;
-  videoId: string;
-  url: string;
-  name: string;
-  items: PlaylistItem[];
-}
-
-const playlists: Playlist[] = [
+const playlistsData: IPlaylist[] = [
   {
-    latest: true,
+    id: 54,
+    name: "Drum & Bass On The Bike - FRANKFURT",
+    country: "Germany",
+    city: "Frankfurt",
+    year: 2024,
     date: "19.7.2024",
     videoId: "K0pdUFP84Jk",
     url: "https://www.youtube.com/watch?v=K0pdUFP84Jk",
-    name: "Germany - Frankfurt",
+    latest: true,
     items: [
       {
         time: 0,
@@ -118,37 +109,176 @@ const playlists: Playlist[] = [
     ],
   },
   {
-    latest: false,
+    id: 53,
+    name: "Drum & Bass On The Bike - SWITZERLAND",
+    city: "Zurich",
+    country: "Switzerland",
+    year: 2024,
     date: "13.6.2024",
     videoId: "V_ERm18dBCY",
     url: "https://youtu.be/V_ERm18dBCY",
-    name: "Switzerland - Zurich",
-    items: [{ time: 0, title: "Work in progress", url: "" }],
+    latest: false,
+    items: [
+      {
+        time: 0,
+        title: "Formula - Bratt Selection",
+        url: "https://youtu.be/p-G0g-dNIzo",
+      },
+      { time: 233, title: "???", url: "" },
+      {
+        time: 468,
+        title: "Version - Gimmicks",
+        url: "https://youtu.be/IOYMzRrjd3s",
+      },
+      {
+        time: 638,
+        title: "???",
+        url: "",
+      },
+      {
+        time: 851,
+        title: "Decades & Mansa - Gin & Tonic (Same sample unknown remix)",
+        url: "",
+      },
+      {
+        time: 1064,
+        title: "TZ- Reminisce",
+        url: "https://youtu.be/a8qYMbRaJek",
+      },
+      {
+        time: 1256,
+        title: "HERMIT - Break It Off (KIPPO Remix)",
+        url: "https://youtu.be/8QBrCIR4MPc",
+      },
+      {
+        time: 1432,
+        title: "DRZ - Reasons",
+        url: "https://youtu.be/4OfzB2NvucU",
+      },
+      {
+        time: 1602,
+        title: "Dawn wall - Fears",
+        url: "https://youtu.be/TRLrEpcnWh0",
+      },
+      {
+        time: 1752,
+        title: "Britney Spears - Toxic (Formula Remix)",
+        url: "https://youtu.be/A1aRxotJu8M",
+      },
+      {
+        time: 1857,
+        title: "Break the silence ???",
+        url: "",
+      },
+      {
+        time: 2050,
+        title: "Tantrum Desire - Reach (??? Remix)",
+        url: "",
+      },
+      {
+        time: 2135,
+        title:
+          "TC - Next Hype (ft. Jakes) (Crissy Criss + Malux + Erb N Dub Remix)",
+        url: "https://youtu.be/6ndeBQg2Yes",
+      },
+      {
+        time: 2199,
+        title: "???",
+        url: "https://youtu.be/6ndeBQg2Yes",
+      },
+      {
+        time: 2305,
+        title: "Route 94 - My Love (Ft. Jess Glynne) (Sigma Remix)",
+        url: "https://youtu.be/NCM0LqEOdbU",
+      },
+      {
+        time: 2391,
+        title: "Majistrate - Bombaclart (Turno Remix)",
+        url: "https://youtu.be/ZLvo6eTvDgg",
+      },
+      {
+        time: 2495,
+        title: "TZ - Show me",
+        url: "https://youtu.be/ZCzX7CxuYos",
+      },
+      {
+        time: 2709,
+        title: "???",
+        url: "",
+      },
+      {
+        time: 2950,
+        title: "Fall In Love (Dope Ammo & Marvellous Cain Remix)",
+        url: "https://youtu.be/EGF_2f5lqxY",
+      },
+      {
+        time: 3152,
+        title: "Formula - Warrior VIP Remix)",
+        url: "https://youtu.be/-7M5xG6WJBk",
+      },
+      {
+        time: 3365,
+        title: "Childish Gambino - Redbone (??? Remix)",
+        url: "",
+      },
+      {
+        time: 3514,
+        title: "???",
+        url: "",
+      },
+      {
+        time: 3621,
+        title: "???",
+        url: "",
+      },
+      {
+        time: 3748,
+        title: "Ashanti - Unfoolish (??? Remix)",
+        url: "",
+      },
+      {
+        time: 3898,
+        title: "???",
+        url: "",
+      },
+    ],
   },
   {
-    latest: false,
+    id: 52,
+    name: "Drum & Bass On The Bike - DARWIN",
+    city: "Darwin",
+    country: "Australia",
+    year: 2024,
     date: "27.5.2024",
     videoId: "SZGyi9km_6E",
     url: "https://youtu.be/SZGyi9km_6E",
-    name: "Australia - Darwin",
+    latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
   {
-    latest: false,
+    id: 51,
+    name: "Drum & Bass On The Bike - BRISTOL",
+    city: "Bristol",
+    country: "England",
+    year: 2024,
     date: "4.4.2024",
     videoId: "RqimBw6uTWg",
     url: "https://www.youtube.com/watch?v=RqimBw6uTWg",
-    name: "Englang - Bristol",
+    latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
   {
-    latest: false,
+    id: 50,
+    name: "Drum & Bass On The Bike - SOUTHAMPTON",
+    city: "Southampton",
+    country: "England",
+    year: 2024,
     date: "7.3.2024",
     videoId: "shzJxoNBF5M",
     url: "https://youtu.be/shzJxoNBF5M",
-    name: "England - Southampton",
+    latest: false,
     items: [{ time: 0, title: "Work in progress", url: "" }],
   },
 ];
 
-export default playlists;
+export default playlistsData;

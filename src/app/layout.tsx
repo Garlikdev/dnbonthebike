@@ -36,10 +36,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="flex h-screen flex-col">
-            <Nav />
-            {children}
-          </main>
+          <Nav />
+          {children}
         </ThemeProvider>
       </body>
       <GoogleTagManager gtmId="GTM-KP226FVQ" />

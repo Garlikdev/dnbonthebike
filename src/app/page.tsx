@@ -1,250 +1,130 @@
-"use client";
-
-import React, { useState, useRef, useEffect } from "react";
-import moment from "moment";
-import ReactPlayer from "react-player/youtube";
-import playlists from "@/lib/Playlists";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Playlist from "./components/Playlist";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import playlistsData from "@/components/tracklist/TracklistData";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
 import Link from "next/link";
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 export default function HomePage() {
-  // State to keep track of the selected playlist
-  const [currentPlaylist, setCurrentPlaylist] = useState(playlists[0]);
-
-  // State to keep track of current times for each playlist
-  const [currentTimes, setCurrentTimes] = useState<Record<string, number>>(
-    playlists.reduce((acc, playlist) => ({ ...acc, [playlist.name]: 0 }), {}),
-  );
-
-  // State to control if the player is playing
-  const [playing, setPlaying] = useState(false);
-
-  // Refs to keep track of player instances
-  const playerRefs = useRef<Record<string, ReactPlayer | null>>(
-    playlists.reduce(
-      (acc, playlist) => ({ ...acc, [playlist.name]: null }),
-      {},
-    ),
-  );
-
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!currentPlaylist) return; // Early return if no playlist is selected
-
-    const playlistName = currentPlaylist.name;
-    const currentTime = currentTimes[playlistName] ?? 0; // Default to 0 if undefined
-
-    const activeIndex = currentPlaylist.items.findIndex((item, index) => {
-      const nextItem = currentPlaylist.items[index + 1];
-      return (
-        currentTime >= item.time &&
-        (nextItem === undefined || currentTime < nextItem.time)
-      );
-    });
-
-    setActiveIndex(activeIndex);
-  }, [currentTimes, currentPlaylist]);
-
-  // Handler for player ready event
-  const handlePlayerReady = (player: ReactPlayer, name: string) => {
-    playerRefs.current[name] = player;
-    setInterval(() => {
-      if (player) {
-        setCurrentTimes((prevTimes) => ({
-          ...prevTimes,
-          [name]: player.getCurrentTime() || 0,
-        }));
-      }
-    }, 1000);
-  };
-
-  // Handler for item click event
-  const handleItemClick = (time: number, name: string) => {
-    playerRefs.current[name]?.seekTo(time, "seconds");
-    setPlaying(true); // Set the player to play when a song is clicked
-  };
-
-  // Handler for playlist selection
-  const handlePlaylistChange = (value: string) => {
-    const playlist = playlists.find((playlist) => playlist.name === value);
-    if (playlist) {
-      setCurrentPlaylist(playlist);
-      setPlaying(false); // Pause when changing playlists
-    }
-  };
-
-  const [hasWindow, setHasWindow] = useState(false);
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHasWindow(true);
-    }
-  }, []);
-
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <div className="container flex flex-col items-center justify-center gap-4 px-4 py-8">
-        <h1 className="bg-gradient-to-r from-neutral-500 via-yellow-500 via-30% to-indigo-500 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent dark:from-neutral-100 dark:via-yellow-100 dark:to-indigo-100">
-          Tracklists
-        </h1>
-        <div className="max-w-64">
-          <Select
-            value={currentPlaylist?.name ?? "No playlist selected"}
-            onValueChange={handlePlaylistChange}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a playlist" />
-            </SelectTrigger>
-            <SelectContent>
-              {playlists.map((playlist) => (
-                <SelectItem
-                  key={playlist.name}
-                  value={playlist.name}
-                  className={`cursor-pointer py-2`}
-                >
-                  {playlist.name}
-                </SelectItem>
+    <main className="relative flex min-h-screen w-full flex-col items-center gap-4 overflow-hidden bg-background py-4">
+      <div className="absolute left-[-50px] top-[-50px] z-[2] h-[200px] w-[900px] rotate-[-5deg] rounded-full bg-[#373372] opacity-40 blur-[60px]"></div>
+      <div className="absolute left-[-50px] top-[-50px] z-[1] h-[400px] w-[1200px] rotate-[-5deg] rounded-full bg-[#680963] opacity-60 blur-[60px]"></div>
+      <div className="absolute bottom-[100px] left-[80px] z-[3] h-[500px] w-[800px] rounded-full bg-[#7C336C] opacity-80 blur-[60px]"></div>
+      <div className="absolute bottom-[80px] right-[100px] z-[4] h-[450px] w-[450px] rounded-full bg-[#B3588A] opacity-80 blur-[60px]"></div>
+      <div className="absolute left-[100px] top-[220px] z-[5] h-[350px] w-[550px] -rotate-[15deg] rounded-full bg-[#ffffff] opacity-30 blur-[60px]"></div>
+      <div className="absolute left-[550px] top-[150px] z-[6] h-[250px] w-[350px] -rotate-[35deg] rounded-full bg-[#ffffff] opacity-30 blur-[60px]"></div>
+      <div className="container grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <Card className="relative z-10 h-full w-full bg-background/50 lg:col-span-2 lg:max-h-80">
+          <CardContent className="h-full pt-6">
+            <div className="flex h-full w-full flex-col-reverse justify-between gap-4 sm:flex-row">
+              <div className="flex h-full w-full flex-col gap-4 text-balance text-sm md:w-2/3">
+                <h1 className="text-2xl font-bold uppercase">Dom Whiting</h1>
+                <div className="flex h-full flex-col gap-2">
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      Better known as the &quot;DJ on the Bike&quot;, Dom has
+                      been out and about originally during lockdown and
+                      continuing since, spreading infectious energy with his DJ
+                      sets while on a bike ride with public crowds gathering in
+                      the thousands throughout Europe.
+                    </p>
+                    <p>
+                      He has worked with brands such as Samsung and Three
+                      promoting their products and services.
+                    </p>
+                    <p>As seen on LadBible, ITV and BBC.</p>
+                  </div>
+                  <p className="flex flex-col items-start gap-2 md:flex-row md:items-center">
+                    Contact:{" "}
+                    <Link href="mailto:bookings@domwhiting.co.uk">
+                      <Button variant="link" className="px-0 underline">
+                        bookings@domwhiting.co.uk
+                      </Button>
+                    </Link>
+                  </p>
+                </div>
+              </div>
+              <div className="relative h-64 md:w-1/3">
+                <Image
+                  src="/DomPhoto.webp"
+                  alt="Dom Photo"
+                  fill
+                  className="!relative h-64 rounded-2xl object-cover object-top shadow-lg md:!absolute md:h-auto"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="relative z-10 flex max-h-96 w-full flex-col overflow-hidden bg-background/50 lg:col-span-1 lg:max-h-80">
+          <CardHeader className="shadow-lg">
+            <CardTitle className="text-2xl uppercase">Latest events</CardTitle>
+          </CardHeader>
+          <ScrollArea className="h-full max-h-96 py-4">
+            <CardContent className="flex flex-col gap-4 lg:max-h-64">
+              {playlistsData.map((playlist) => (
+                <div key={playlist.id} className="flex flex-col gap-2">
+                  <p className="font-bold">{playlist.date}</p>
+                  <Link
+                    href={`/tracklists/${playlist.year}/${playlist.city.toLowerCase()}`}
+                    className="flex cursor-pointer flex-row items-center gap-4 rounded-xl bg-foreground/10 px-4 py-4 shadow-lg transition-all hover:scale-[1.02] hover:bg-primary/30"
+                  >
+                    <Image
+                      src={`https://i.ytimg.com/vi/${playlist.videoId}/mqdefault.jpg`}
+                      alt={playlist.name}
+                      width={320}
+                      height={180}
+                      className="h-24 w-48 rounded-2xl object-cover shadow-lg lg:h-16 lg:w-24"
+                    />
+                    <div className="grid grid-cols-3 items-center lg:grid-cols-1">
+                      <div className="col-span-1 w-64 flex-row items-center gap-2 lg:w-auto lg:flex-col">
+                        <p className="text-sm">{playlist.country}</p>
+                        <p className="font-bold">{playlist.city}</p>
+                      </div>
+                      <div className="col-span-2">
+                        <p className="font-bold lg:hidden">{playlist.name}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               ))}
-            </SelectContent>
-          </Select>
-        </div>
-        {/* Display the selected playlist */}
-        {currentPlaylist && (
-          <Card className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2">
-            <CardHeader>
-              <CardTitle>
-                <Link
-                  className="underline hover:text-blue-300"
-                  href={currentPlaylist.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {currentPlaylist.name}
-                </Link>
-              </CardTitle>
-              <CardDescription>
-                {moment(currentPlaylist.date, "D.M.YYYY").format("LL")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="relative pt-[56.25%]">
-                {hasWindow && (
-                  <ReactPlayer
-                    className="absolute left-0 top-0"
-                    url={currentPlaylist.url}
-                    ref={(player) => {
-                      if (player) {
-                        handlePlayerReady(player, currentPlaylist.name);
-                      }
-                    }}
-                    playing={playing}
-                    controls
-                    autoplay={false}
-                    width="100%"
-                    height="100%"
+            </CardContent>
+          </ScrollArea>
+        </Card>
+        <Card className="relative z-10 flex h-fit w-full flex-col justify-center bg-background/50 lg:col-span-3">
+          <Link
+            href="https://www.domwhiting.co.uk/product-page/2023TourTShirt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-[1.02]"
+          >
+            <CardContent className="pt-6">
+              <div className="flex justify-between gap-4">
+                <div className="relative w-1/2">
+                  <Image
+                    src="/shirtnew.webp"
+                    alt="2023 Tour T-Shirt"
+                    fill
+                    className="h-auto rounded-2xl object-cover shadow-lg"
                   />
-                )}
+                </div>
+                <div className="flex h-64 w-1/2 flex-col justify-between space-y-3 text-balance px-4 text-sm">
+                  <h1 className="text-2xl font-bold uppercase">
+                    2023 Tour T-Shirt
+                  </h1>
+                  <div className="flex flex-col gap-4 text-lg">
+                    <p>Click to order the 2023 Tour T-Shirt.</p>
+                    <p>
+                      You can order it through official Dom Whiting website.
+                    </p>
+                  </div>
+                  <p className="pt-4 text-2xl font-bold">£26.50</p>
+                </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Playlist
-                items={currentPlaylist.items}
-                onItemClick={(time) =>
-                  handleItemClick(time, currentPlaylist.name)
-                }
-                currentTime={currentTimes[currentPlaylist.name] ?? 0}
-                setPlaying={setPlaying}
-              />
-            </CardFooter>
-          </Card>
-        )}
-        {currentPlaylist && (
-          <Card className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2">
-            <CardHeader>
-              <CardTitle className="flex justify-between">
-                {currentPlaylist.name} <p>▶️ Now playing</p>
-              </CardTitle>
-              <CardDescription>Click on the song to play it</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableCaption>
-                  Unknown songs are being updated daily.
-                </TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Song name</TableHead>
-                    <TableHead>Link</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentPlaylist.items.map((item, index) => (
-                    <TableRow
-                      key={item.time}
-                      onClick={() =>
-                        handleItemClick(item.time, currentPlaylist.name)
-                      }
-                      className={`cursor-pointer transition-colors hover:!bg-orange-500/60 ${
-                        activeIndex === index ? "bg-orange-500/30" : ""
-                      }`}
-                    >
-                      <TableCell className="font-medium">
-                        {formatTime(item.time)}
-                      </TableCell>
-                      <TableCell>{item.title}</TableCell>
-                      <TableCell>
-                        {item.url ? (
-                          <Link
-                            href={item.url}
-                            className="inline-flex items-center gap-1 text-green-500"
-                          >
-                            Link <ExternalLinkIcon />
-                          </Link>
-                        ) : (
-                          ""
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        )}
+          </Link>
+        </Card>
       </div>
-    </div>
+    </main>
   );
 }
-
-const formatTime = (seconds: number) => {
-  const hrs = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
-  return `${hrs > 0 ? `${hrs}:` : ""}${hrs > 0 && mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`;
-};
