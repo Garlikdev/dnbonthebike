@@ -156,29 +156,27 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="transition-transform hover:scale-[1.02]"
           >
-            <CardContent className="pt-6">
-              <div className="flex justify-between gap-4">
-                <div className="relative w-1/2">
-                  <Image
-                    src="/shirtnew.webp"
-                    alt="2023 Tour T-Shirt"
-                    sizes="50vw"
-                    fill
-                    className="h-auto rounded-2xl object-cover shadow-lg"
-                  />
+            <CardContent className="flex h-full flex-col justify-between gap-4 pt-6 md:flex-row">
+              <div className="relative h-48 w-full md:h-auto md:w-1/2">
+                <Image
+                  src="/shirtnew.webp"
+                  alt="2023 Tour T-Shirt"
+                  sizes="50vw"
+                  fill
+                  className="h-auto rounded-2xl object-cover shadow-lg"
+                />
+              </div>
+              <div className="flex w-full flex-col justify-between space-y-3 text-balance px-4 text-sm md:min-h-64 md:w-1/2">
+                <h1 className="text-2xl font-bold uppercase">
+                  2023 Tour T-Shirt
+                </h1>
+                <div className="flex flex-col gap-4 text-lg">
+                  <p>
+                    Click to redirect to official Dom Whiting website and order
+                    the 2023 Tour T-Shirt.
+                  </p>
                 </div>
-                <div className="flex h-64 w-1/2 flex-col justify-between space-y-3 text-balance px-4 text-sm">
-                  <h1 className="text-2xl font-bold uppercase">
-                    2023 Tour T-Shirt
-                  </h1>
-                  <div className="flex flex-col gap-4 text-lg">
-                    <p>Click to order the 2023 Tour T-Shirt.</p>
-                    <p>
-                      You can order it through official Dom Whiting website.
-                    </p>
-                  </div>
-                  <p className="pt-4 text-2xl font-bold">£26.50</p>
-                </div>
+                <p className="pt-4 text-2xl font-bold">£26.50</p>
               </div>
             </CardContent>
           </Link>
